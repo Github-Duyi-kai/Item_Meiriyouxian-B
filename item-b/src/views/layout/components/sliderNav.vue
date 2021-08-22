@@ -16,11 +16,31 @@
       </a-breadcrumb>
     </div>
     <ul class="user-info">
-      <li>
-        欢迎Huang Jiankai
+      <li class="userInfoWelcome">
+        {{
+          $store.state.welcome === false
+            ? `欢迎${this.$store.state.userInfo.username}`
+            : "未登录"
+        }}
         <a-icon type="down" />
       </li>
-      <li>退出</li>
+      <li class="userInfoShow" v-if="$store.state.userInfoLi">
+        权限："{{ $store.state.userInfo.role }}"
+      </li>
+      <li class="userInfoShow" v-if="$store.state.userInfoLi">
+        appkey："{{ $store.state.userInfo.appkey }}"
+      </li>
+      <li class="userInfoShow" v-if="$store.state.userInfoLi">
+        邮箱："{{ $store.state.userInfo.email }}"
+      </li>
+      <li
+        style="color: red"
+        @click="logOut"
+        class="userInfoShow"
+        v-if="$store.state.userInfoLi"
+      >
+        退出
+      </li>
     </ul>
   </div>
 </template>
@@ -32,6 +52,14 @@ export default {
   methods: {
     toggleCollapsed() {
       this.$store.dispatch('changeCollapsed');
+    },
+    logOut() {
+      this.$store.dispatch('logOut');
+      //   document.getElementsByClassName('userInfoWelcome')[0].innerHTML = '未登录';
+      //   const arr = document.querySelectorAll('.userInfoShow');
+      //   for (let i = 0; i < arr.length; i++) {
+      //     document.getElementsByClassName('user-info')[0].removeChild(arr[i]);
+      //   }
     },
   },
 };

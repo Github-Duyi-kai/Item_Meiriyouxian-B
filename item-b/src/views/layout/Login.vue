@@ -73,6 +73,8 @@ export default {
           userApi
             .Login(this.LoginForm)
             .then((config) => {
+              console.log(config);
+              this.$store.dispatch('changeUserInfo', config.data.data);
               if (config.data && config.data.status === 'success') {
                 this.$router.push({
                   name: 'Home',
