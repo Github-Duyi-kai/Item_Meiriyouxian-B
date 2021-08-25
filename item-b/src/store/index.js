@@ -15,6 +15,7 @@ export default new Vuex.Store({
     },
     userInfoLi: true, // 这个控制页面右上角的li标签是否显示
     welcome: false, // 控制右上角页面显示未登录还是欢迎
+    menuRoutes: [], // 路由信息
   },
   mutations: {
     changeCollapsed(state) {
@@ -24,11 +25,17 @@ export default new Vuex.Store({
       state.userInfo = userInfo;
     },
     logOut(state) {
-      Object.entries(state.userInfo).forEach((item) => {
-        item[1] = '';
-      });
+      state.userInfo = {
+        username: '',
+        appkey: '',
+        role: '',
+        email: '',
+      };
       state.userInfoLi = false; // 为false，就是不显示右上角哪些li标签
       state.welcome = true; // 为true，就是要显示未登录
+    },
+    changeMenuRoutes(state, routes) {
+      state.menuRoutes = routes;
     },
   },
   actions: {
@@ -42,6 +49,9 @@ export default new Vuex.Store({
     logOut({ commit }) {
       commit('logOut');
       removeUserCookies();
+    },
+    changeMenuRoutes({ commit }, routes) {
+      commit('changeMenuRoutes', routes);
     },
   },
   modules: {},
