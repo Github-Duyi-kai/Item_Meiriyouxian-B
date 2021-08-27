@@ -91,3 +91,20 @@ export default {
   },
 };
 </script>
+
+<style lang="less" scoped>
+.user-info{
+    position: absolute;
+    right: 10px;
+    top:10px;
+    z-index: 99;
+   &:hover{
+        background-color: turquoise;
+        border-radius: 20px;
+        box-shadow: 0 0 10px white;
+   }
+   .userInfoWelcome{
+       font-weight: bolder;
+   }
+}
+</style>

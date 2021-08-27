@@ -1,13 +1,15 @@
 <template>
   <a-table :columns="columns" :data-source="formData" :pagination='page'  @change="pageChange">
-    <div slot="operation" >
-        <a-button type="primary">编辑</a-button>
-        <a-button type="danger">删除</a-button>
+    <div slot="operation" slot-scope="text,record" >
+        <a-button type="primary" @click="productEdit">编辑</a-button>
+        <a-button type="danger" @click="productRemove(record)">删除</a-button>
     </div>
   </a-table>
 </template>
 <script>
 // 表头信息
+// 所有的表格数据
+
 const columns = [
   {
     title: 'ID',
@@ -72,11 +74,9 @@ const columns = [
     dataIndex: 'operation',
     key: 'operation',
     scopedSlots: { customRender: 'operation' },
-
+    width: 200,
   },
 ];
-// 所有的表格数据
-
 export default {
   data() {
     return {
@@ -88,6 +88,15 @@ export default {
     pageChange(val) {
     //   console.log('页码改变了', val);
       this.$emit('pageChange', val);
+    },
+    productEdit() {
+      this.$router.push({
+        name: 'ProductEdit',
+      });
+    },
+    productRemove(record) {
+    //   console.log('拿到了表格中按钮对应的这一行数据', record);
+      this.$emit('productRemove', record);
     },
   },
 };

@@ -2,9 +2,7 @@
   <div class="menu-list">
     <a-menu
       :default-selected-keys="[
-        $router.currentRoute.matched[1]
-          ? $router.currentRoute.matched[1].name
-          : '',
+$router.currentRoute.matched[1]? $router.currentRoute.matched[1].name : '',
       ]"
       :default-open-keys="[$router.currentRoute.matched[0].name]"
       mode="inline"
@@ -33,8 +31,18 @@
 
 <script>
 export default {
+  data() {
+    return {
+
+    };
+  },
   created() {
-    // console.log(this.$router);
+
+  },
+  watch: {
+    $route() {
+
+    },
   },
 };
 </script>

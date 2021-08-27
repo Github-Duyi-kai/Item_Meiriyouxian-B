@@ -7,6 +7,10 @@ import axios from '@/axios';
  * @param {*} params
  * @return {*}
  */
-export default function (params) {
+function list(params) {
   return axios.get('/products/all', { params });
 }
+function remove(params) {
+  return axios.delete(`/products/${params.id}`);
+}
+export default { list, remove };

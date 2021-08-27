@@ -46,6 +46,15 @@ const asyncToRouter = [{
       icon: 'gold',
     },
     component: () => import('@/views/page/category.vue'),
+  }, {
+    path: '/edit',
+    name: 'ProductEdit',
+    meta: {
+      title: '编辑商品',
+      hidden: true,
+      icon: 'form',
+    },
+    component: () => import('@/views/page/productEdit.vue'),
   }],
 }];
 const routes = [{
