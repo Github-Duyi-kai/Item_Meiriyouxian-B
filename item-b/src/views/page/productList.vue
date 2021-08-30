@@ -97,9 +97,9 @@ export default {
             this.getTableData();
           });
         },
-        onCancel() {
-          // 点击退出之后的操作
-          return true;
+        onCancel: () => {
+          // 点击退出之后的操作\
+          this.$message.warn('已退出！');
         },
         class: 'confirm-box',
       });
