@@ -13,7 +13,7 @@
       <a-input v-model="form.price_off" type="number" placeholder="请输入商品折扣价" />
     </a-form-model-item>
     <a-form-model-item label="商品库存" prop="inventory">
-      <a-input v-model="form.inventory" type="number" placeholder="请输入商品折扣价" />
+      <a-input v-model="form.inventory" type="number" placeholder="请输入商品库存" />
     </a-form-model-item>
     <a-form-model-item label="计量单位" prop="unit">
       <a-select v-model="form.unit" placeholder="请选择计量单位" @change="changeUnit">
@@ -32,10 +32,16 @@
           @change="handleChange"
           name="avatar"
         >
-          <div v-if="form.images.fileList.length < 8">
+          <div v-if="form.images.fileList&&form.images.fileList.length < 8">
             <a-icon type="plus" />
             <div class="ant-upload-text">
               Upload
+            </div>
+          </div>
+          <div v-else>
+                 <a-icon type="plus" />
+                 <div class="ant-upload-text">
+                  Upload
             </div>
           </div>
         </a-upload>
@@ -59,6 +65,8 @@
   </a-form-model>
 </template>
 <script>
+// import productApi from '@/api/product';
+
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -68,12 +76,12 @@ function getBase64(file) {
   });
 }
 export default {
-  props: ['form'],
+  props: ['addForm'],
   data() {
     return {
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
-      unitList: ['g', 'kg'],
+      unitList: ['g', 'kg', '个', '瓶', '包', '条', '把'],
       rules: {
         price: [
           { required: true, message: '请输入商品售价', trigger: 'blur' },
@@ -83,7 +91,36 @@ export default {
         unit: [{ required: true, message: '请选择计量单位', trigger: 'blur' }],
         images: [{ required: true, message: '请上传图片', trigger: 'blur' }],
       },
+      form: [],
     };
+  },
+  created() {
+    console.log('有没有传过来', this.addForm);
+    console.log('第二部分拿到数据', this.form);
+    if (this.$router.currentRoute.path.includes('edit')) {
+      // 说明当前是编辑页面
+      let arr = [];
+      console.log('+++++', this.$route.params);
+      arr = this.$route.params.editFormData.images.map((item, index) => ({
+        uid: index,
+        name: `mage-${index}.png`,
+        status: 'done',
+        url: item,
+      }));
+      console.log('看一下第二部分的arr', arr);
+      // console.log(this.$route.params.editFormData.images);
+      this.form = {
+        ...this.addForm,
+        images: {
+          previewVisible: true,
+          previewImage: arr[0].url,
+          fileList: arr,
+        },
+      };
+    } else {
+      // 当前是添加商品页面
+      this.form = this.addForm;
+    }
   },
   methods: {
     onSubmit() {
@@ -117,9 +154,11 @@ export default {
       this.form.images.previewVisible = true;
     },
     handleChange({ fileList }) {
+    //   console.log('&&&&&&&查看fileList', this.form.images.fileList);
     //   console.log('fileList', fileList);
     //   console.log('三个参数之一event，返回', event);
-      //   console.log('三个参数之一file，记录图片的信息', file);
+    //   console.log('三个参数之一file，记录图片的信息', file);
+    //   console.log('点击了文件上传');
       this.form.images.fileList = fileList;
     },
     changeUnit() {

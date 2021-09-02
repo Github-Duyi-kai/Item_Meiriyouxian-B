@@ -14,7 +14,7 @@
       <a-input v-model="form.desc" type="textarea" />
     </a-form-model-item>
 
-    <a-form-model-item label="商品类目" prop="category">
+    <a-form-model-item label="商品类目" >
       <a-select v-model="form.category" placeholder="请输入类目" @change="changeCategory">
         <a-select-option :value="c.id" v-for="c in categoryList" :key="c.id">
           {{ c.name }}
@@ -51,17 +51,16 @@
 import categoryApi from '@/api/category';
 
 export default {
-  props: ['form'],
+  props: ['addForm'],
   data() {
     return {
       labelCol: { span: 5 },
       wrapperCol: { span: 14 },
-
       categoryList: [],
       categoryItems: [],
       rules: {
         title: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { required: true, message: '请输入产品标题', trigger: 'blur' },
         ],
         desc: [{ required: true, message: '请输入描述', trigger: 'blur' }],
         category: [
@@ -74,6 +73,7 @@ export default {
         ],
         tags: [{ required: true, message: '请输入标签', trigger: 'blur' }],
       },
+      form: {},
     };
   },
   methods: {
@@ -81,7 +81,7 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.$message.success('提交成功！');
-          this.$emit('onSubmit', this.form);
+          this.$emit('basicSubmit', this.form);
         } else {
           this.$message.error('提交失败，请重新校验信息!');
         }
@@ -112,6 +112,14 @@ export default {
     },
   },
   created() {
+    // console.log('basic查看路由', this.$router);
+    // console.log('查看第一部分传递过来的form是什么', this.addForm);
+    if (this.$router.currentRoute.path.includes('edit')) {
+      //   编辑路由
+      this.form = this.addForm;
+    } else {
+      this.form = this.addForm;
+    }
     categoryApi().then((res) => {
       this.categoryList = res.data;
     //   console.log('获取到类目列表', res);

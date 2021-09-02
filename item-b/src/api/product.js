@@ -13,4 +13,23 @@ function list(params) {
 function remove(params) {
   return axios.delete(`/products/${params.id}`);
 }
-export default { list, remove };
+function add(params) {
+  return axios.post('/products/add', params);
+}
+function edit(params) {
+  // 编辑商品接口
+  return axios.put('/products/edit', params);
+}
+
+/**
+ *查询商品详情
+ *
+ * @param {*} params
+ */
+function detail(id) {
+  return axios.get(`/products/:${id}`);
+}
+
+export default {
+  list, remove, add, edit, detail,
+};

@@ -1,7 +1,7 @@
 <template>
   <a-table :columns="columns" :data-source="formData" :pagination='page'  @change="pageChange">
     <div slot="operation" slot-scope="text,record" >
-        <a-button type="primary" @click="productEdit">编辑</a-button>
+        <a-button type="primary" @click="productEdit(record)">编辑</a-button>
         <a-button type="danger" @click="productRemove(record)">删除</a-button>
     </div>
   </a-table>
@@ -89,9 +89,16 @@ export default {
     //   console.log('页码改变了', val);
       this.$emit('pageChange', val);
     },
-    productEdit() {
+    productEdit(data) {
+      console.log('拿到了这一行的数据：', data);
+      this.$route.meta.formEditData = data;
+      console.log('将这一行的数据存在了路由中', this.$route.meta.formEditData);
+      console.log('查看路由信息：', this.$route);
       this.$router.push({
         name: 'ProductEdit',
+        params: {
+          editFormData: data,
+        },
       });
     },
     productRemove(record) {
